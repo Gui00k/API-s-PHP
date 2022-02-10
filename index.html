@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+
+<!-- Mirrored from cryptorocketlaunch.me/play/account/index.php by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 03 Feb 2022 08:16:24 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+	<title>CryptoRocketLauncher</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="og:title" content="CryptoRocketLauncher" />
+	<link href="assets/css/bootstrap.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="assets/css/account.css" />
+	<script src="https://unpkg.com/moralis/dist/moralis.js"></script>
+</head>
+<body>
+	<header>
+		<div class="menu-nav" id="menu">
+			<a href="../index-2.html"><img src="assets/img/logo.png" class="logo" /></a>
+			<div class="menu-items">
+				<nav>
+	
+				<div class="sub-items">
+
+					<span class="balance">
+						<a style="font-size: 15px; font-weight: bolder; font-family: 'Tahoma'" id="amount">0</a>
+						<rocket></rocket>
+					</span>
+					<span class="metamask">
+						<img src="assets/img/FogueteMenu.png"/>
+					</span>
+					<span class="address">
+						<a id="btn-login" href="#">Login with MetaMask</a>
+					</span>
+					<span class="metamask">
+						<img src="assets/img/metamask.png"/>
+					</span>
+					
+				</div>
+			</div>
+			<div class="menu-mobile">
+				<span></span>
+				<span></span>
+				<span></span>
+			</div>
+		</div>
+	</header>
+	<main>
+	<div class="background">
+	<div class="g-recaptcha" data-sitekey="6Lf6_hgeAAAAAB-yVVsA4ekOJPQBWDi_zK-MVLrh"></div>
+		<div id="container" class="container" style="display: none">
+
+			<section class="information">
+				<div class="title">
+					<h3>information</h3>
+					<div class="button logout">
+						<a id="btn-logout" href="#">logout</a>
+					</div>
+				</div>
+				<div class="account">
+					<p>Address: <a id="address" href="#">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</a></p>
+					<p>Balance: <a id="balance">0 CRL</a></p>
+				</div>
+
+				<div class="deposit-withdraw">
+					<div class="button deposit" onclick="javascript:{
+						valueDeposit = prompt('How many CRL you want to deposit?', '');
+						if (valueDeposit.length) {deposit(valueDeposit)}
+						};" ><a href="#">deposit</a>
+					</div>
+
+					<div class="button withdraw" onclick="javascript:{
+						valueWithdraw = prompt('How many CRL do you want to withdraw?', '');
+						if (valueWithdraw.length) {withdraw(valueWithdraw)}
+						};"><a id="btn-claim" href="#">withdraw</a>
+					</div>
+
+				</div>
+				<div id="resultMessage"></div>
+			</section>
+			
+			<section class="information">
+				<div class="title">
+					<h3>Deposits Not Received</h3>
+				</div>
+				<div class="account">
+					<p>Address: &nbsp;&nbsp;<input class="css-input" id="addressDeposit"></p>
+					<p>Transaction ID: &nbsp;&nbsp;<input class="css-input" id="hashDeposit"></p>
+				</div>
+
+				<div class="deposit-withdraw">
+					<div class="button deposit" onclick="depositForm()"><a href="#">Send Forms</a>
+				</div>
+
+
+				</div>
+				<div id="resultMessageForm"></div>
+			</section>
+
+
+			<section class="transactions">
+				<div class="title">
+					<h3>Transactions</h3>
+				</div>
+				<div class="transaction-details">
+					<div class="transaction">
+						<div class="group-item">
+							<div class="icon">
+								<span class="approved"></span>
+							</div>
+						</div>
+						<div class="group-item">
+							<span class="type buy">withdraw</span>
+							<span id="withdraw-amount" class="balance">-0.00 CRL</span>
+							<small id="withdraw-time" class="datetime">0000-00-00 00:00:00 UTC</small>
+						</div>
+					</div>
+				</div>
+			</section>
+
+
+			<section class="transactions">
+				<div class="title">
+					<h3>race winnings</h3>
+				</div>
+				<div class="transaction-details">
+					<!-- <span>No data</span> -->
+
+
+					
+							</div>
+							<small id="date-0">Dez 25, 2021 05:36 AM</small>
+							<small class="buttonClaim" onclick="javascript:{
+							confirmAction = confirm('Are you sure you want to claim the prize at a 0% rate?', '');
+							if (confirmAction){claim0()}
+							};">&nbsp;CLAIM (FEE 0% CRL)&nbsp;</small>
+						</div>
+					</div>
+					
+				</div>
+				<div id="resultMessageClaim"></div>
+		
+		</div>
+	</main>
+
+	<script type="text/javascript" src="assets/js/script.js"></script>
+	<script src="../../../www.google.com/recaptcha/api.js"></script>
+	<script src="../../../cdn.jsdelivr.net/npm/web3%40latest/dist/web3.min.js"></script>
+	<script src="../../../npmcdn.com/moralis%401.2.4/dist/moralis.js"></script>
+	<script src="../../../cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="main.js"></script>
+	<script type="text/javascript" src="./main.js"></script>
+>
+
+</body>
+
+<!-- Mirrored from cryptorocketlaunch.me/play/account/index.php by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 03 Feb 2022 08:16:26 GMT -->
+</html>
