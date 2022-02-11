@@ -18,7 +18,9 @@ CREATE TABLE tb_assets (
     assets_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id CHAR(24) NOT NULL,
     card_id INT NOT NULL,
+    assets_first_acess DATETIME,
     assets_last_acess DATETIME,
+    user_balance FLOAT DEFAULT(0),
     FOREIGN KEY (card_id) REFERENCES tb_cards(card_id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES tb_users(user_id) ON DELETE CASCADE
 );
