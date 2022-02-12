@@ -22,8 +22,8 @@ CREATE TABLE tb_assets (
     assets_first_acess DATETIME,
     assets_last_acess DATETIME,
     user_balance FLOAT DEFAULT(0),
-    FOREIGN KEY (user_addres) REFERENCES tb_users(user_addres) ON DELETE CASCADE
-    FOREIGN KEY (card_id) REFERENCES tb_cards(card_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_addres) REFERENCES tb_users(user_addres) ON DELETE CASCADE,
+    FOREIGN KEY (card_id) REFERENCES tb_cards(card_id) ON DELETE CASCADE
 );
 
 CREATE TABLE tb_deposit (
