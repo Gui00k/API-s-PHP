@@ -31,7 +31,7 @@ CREATE TABLE tb_deposit (
     user_addres CHAR(42),
     deposit_hash CHAR(66),
     deposit_value FLOAT,
-    deposit_date DATETIME,
+    deposit_date DATETIME DEFAULT(NOW()),
     FOREIGN KEY (user_addres) REFERENCES tb_users(user_addres) ON DELETE CASCADE
 );
 
