@@ -26,12 +26,13 @@ $stmt = $conexaoDb->prepare($sql);
 $stmt->bind_param('s', $address);
 $stmt->execute();
 
-$result = @$stmt->get_result()->fetch_all(MYSQLI_ASSOC)[0]['user_balance'];
+$result = @$stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-if (!$result) {
+if (!count($result)) {
     echo json_encode(['status' => 'failed2']);
     return;
 } //No have address
+$result = $result[0]['user_balance'];
 $result = ['balance' => $result];
 //Send amount
 echo json_encode($result);
