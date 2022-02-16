@@ -21,7 +21,7 @@ if (!$addres) {
 
 $conexaoDb = new mysqli($host,  $user, $pass, $name);
 
-$sql = "SELECT user_balance FROM tb_users WHERE user_addres = ?";
+$sql = "SELECT user_balance FROM tb_users WHERE user_address = ?";
 $stmt = $conexaoDb->prepare($sql);
 $stmt->bind_param('s', $addres);
 $stmt->execute();
