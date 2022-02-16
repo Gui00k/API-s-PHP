@@ -13,25 +13,25 @@ if ($method != 'GET') {
 
 header('Content-Type: application/json; charset=utf-8');
 
-$addres = @$_GET['address'];
-if (!$addres) {
-    echo json_encode(['status' => 'failed']);
+$address = @$_GET['address'];
+if (!$address) {
+    echo json_encode(['status' => 'failed1']);
     return;
-} //No have addres
+} //No have address
 
 $conexaoDb = new mysqli($host,  $user, $pass, $name);
 
 $sql = "SELECT user_balance FROM tb_users WHERE user_address = ?";
 $stmt = $conexaoDb->prepare($sql);
-$stmt->bind_param('s', $addres);
+$stmt->bind_param('s', $address);
 $stmt->execute();
 
 $result = @$stmt->get_result()->fetch_all(MYSQLI_ASSOC)[0]['user_balance'];
 
 if (!$result) {
-    echo json_encode(['status' => 'failed']);
+    echo json_encode(['status' => 'failed2']);
     return;
-} //No have addres
+} //No have address
 $result = ['balance' => $result];
 //Send amount
 echo json_encode($result);
