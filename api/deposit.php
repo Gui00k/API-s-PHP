@@ -48,10 +48,18 @@ if (!$result) {
     echo json_encode(['status' => 'failed']);
     return;
 }
+
+if (strtolower($address) == strtolower($result['to_address'])) {
+    echo json_encode(['status' => 'failed']);
+    return;
+}
+
 $value = $result['value'] / 1000000000000000000;
-$address = $result['to_address'];
 $hash = $result['transaction_hash'];
+//Formatando data
 $depositDate = $result['block_timestamp'];
+$depositDate = new DateTime($result['block_timestamp']);
+$depositDate =  $depositDate->format('Y/m/d H:i:s');
 
 //Conectando banco de dados
 $host = 'localhost';
@@ -71,7 +79,7 @@ if ($result != false) {
     echo json_encode(['status' => 'failed']);
     return;
 }
-
+echo $address;
 //Inserindo deposito
 $conexaoDb = new mysqli($host,  $user, $pass, $name);
 $sql = "INSERT INTO tb_deposit(user_address, deposit_hash, deposit_value, deposit_date) VALUES (?, ?, ?, ?)";
@@ -80,6 +88,7 @@ $stmt->bind_param('ssds', $address, $hash, $value, $depositDate);
 
 //testando se tudo ocorreu bem
 if (!$stmt->execute()) {
+    echo $stmt->error;
     echo json_encode(['status' => 'failed']);
     return;
 }
@@ -95,7 +104,7 @@ $stmt->execute();
 
 //testando se tudo ocorreu bem
 if (!$stmt->affected_rows) {
-    echo json_encode(['status' => 'failed6']);
+    echo json_encode(['status' => 'failed']);
     return;
 }
 
