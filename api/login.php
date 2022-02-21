@@ -54,7 +54,7 @@ if (!$stmt->execute()) {
 
 //Pegando transações para salvar no banco de dados
 $transactionList = [];
-$pageSize = 20;
+$pageSize = 500;
 $pageNumber = 0;
 do {
     $haveData = true;
@@ -91,14 +91,17 @@ do {
 //registrando transações
 $valorBalance = 0;
 foreach ($transactionList as $transaction) {
+    if (strtolower($address) == strtolower($transaction['to_address'])) continue;
     $hash = $transaction['transaction_hash'];
     $value = $transaction['value'] / 1000000000000000000;
     $valorBalance += $value;
+    $depositDate = new DateTime($transaction['block_timestamp']);
+    $depositDate =  $depositDate->format('Y/m/d H:i:s');
 
     $conexaoDb = new mysqli($host,  $user, $pass, $name);
-    $sql = "INSERT INTO tb_deposit(user_address, deposit_hash, deposit_value) VALUES (?, ?, ?)";
+    $sql = "INSERT INTO tb_deposit(user_address, deposit_hash, deposit_value, deposit_date) VALUES (?, ?, ?, ?)";
     $stmt = $conexaoDb->prepare($sql);
-    $stmt->bind_param('ssd', $address, $hash, $value);
+    $stmt->bind_param('ssds', $address, $hash, $value, $depositDate);
 
     //testando se tudo ocorreu bem
     if (!$stmt->execute()) {

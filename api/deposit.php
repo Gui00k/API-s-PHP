@@ -51,6 +51,7 @@ if (!$result) {
 $value = $result['value'] / 1000000000000000000;
 $address = $result['to_address'];
 $hash = $result['transaction_hash'];
+$depositDate = $result['block_timestamp'];
 
 //Conectando banco de dados
 $host = 'localhost';
@@ -73,9 +74,9 @@ if ($result != false) {
 
 //Inserindo deposito
 $conexaoDb = new mysqli($host,  $user, $pass, $name);
-$sql = "INSERT INTO tb_deposit(user_address, deposit_hash, deposit_value) VALUES (?, ?, ?)";
+$sql = "INSERT INTO tb_deposit(user_address, deposit_hash, deposit_value, deposit_date) VALUES (?, ?, ?, ?)";
 $stmt = $conexaoDb->prepare($sql);
-$stmt->bind_param('ssd', $address, $hash, $value);
+$stmt->bind_param('ssds', $address, $hash, $value, $depositDate);
 
 //testando se tudo ocorreu bem
 if (!$stmt->execute()) {

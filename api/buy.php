@@ -12,6 +12,8 @@ $data = json_decode(file_get_contents("php://input"), true);
 $address = @$data['address'];
 
 if (!$address) {
-    echo json_encode(['status' => 'failed1']);
+    echo json_encode(['status' => 'failed']);
     return;
 } //No have data
+
+echo json_encode(['buy' => 'buiado']);
