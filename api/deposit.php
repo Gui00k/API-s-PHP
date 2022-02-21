@@ -13,7 +13,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 $address = @$data['address'];
 
 if (!$address) {
-    echo json_encode(['status' => 'failed1']);
+    echo json_encode(['status' => 'failed']);
     return;
 } //No have data
 
@@ -38,14 +38,14 @@ curl_close($curl);
 
 //verificando se houve uma resposta
 if (!$result) {
-    echo json_encode(['status' => 'failed2']);
+    echo json_encode(['status' => 'failed']);
     return;
 }
 
 //Tratando dados recebidos do moralis
 $result = @json_decode($result, true)['result'][0];
 if (!$result) {
-    echo json_encode(['status' => 'failed3']);
+    echo json_encode(['status' => 'failed']);
     return;
 }
 $value = $result['value'] / 1000000000000000000;
@@ -67,7 +67,7 @@ $stmt->execute();
 $result = $stmt->fetch();
 
 if ($result != false) {
-    echo json_encode(['status' => 'failed4']);
+    echo json_encode(['status' => 'failed']);
     return;
 }
 
@@ -79,7 +79,7 @@ $stmt->bind_param('ssd', $address, $hash, $value);
 
 //testando se tudo ocorreu bem
 if (!$stmt->execute()) {
-    echo json_encode(['status' => 'failed5']);
+    echo json_encode(['status' => 'failed']);
     return;
 }
 
