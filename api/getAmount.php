@@ -7,7 +7,7 @@ $pass = 'z&Y2pyUvys4fIAy*r$AFgbPnZSD';
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method != 'GET') {
-    http_response_code(500);
+    http_response_code(404);
     return;
 } //method not is GET
 
@@ -15,7 +15,7 @@ header('Content-Type: application/json; charset=utf-8');
 
 $address = @$_GET['address'];
 if (!$address) {
-    echo json_encode(['status' => 'failed1']);
+    echo json_encode(['status' => 'failed']);
     return;
 } //No have address
 
@@ -29,7 +29,7 @@ $stmt->execute();
 $result = @$stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 if (!count($result)) {
-    echo json_encode(['status' => 'failed2']);
+    echo json_encode(['status' => 'failed']);
     return;
 } //No have address
 $result = $result[0]['user_balance'];
