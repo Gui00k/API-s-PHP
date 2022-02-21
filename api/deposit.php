@@ -11,10 +11,9 @@ header('Content-Type: application/json; charset=utf-8');
 //Pegando dados
 $data = json_decode(file_get_contents("php://input"), true);
 $address = @$data['address'];
-$hash = @$data['hash'];
 
-if (!$address && !$hash) {
-    echo json_encode(['status' => 'failed']);
+if (!$address) {
+    echo json_encode(['status' => 'failed1']);
     return;
 } //No have data
 
@@ -39,18 +38,18 @@ curl_close($curl);
 
 //verificando se houve uma resposta
 if (!$result) {
-    echo json_encode(['status' => 'failed']);
+    echo json_encode(['status' => 'failed2']);
     return;
 }
 
 //Tratando dados recebidos do moralis
 $result = @json_decode($result, true)['result'][0];
 if (!$result) {
-    echo json_encode(['status' => 'failed']);
+    echo json_encode(['status' => 'failed3']);
     return;
 }
 $value = $result['value'] / 1000000000000000000;
-$address = $result['from_address'];
+$address = $result['to_address'];
 $hash = $result['transaction_hash'];
 
 //Conectando banco de dados
@@ -68,7 +67,7 @@ $stmt->execute();
 $result = $stmt->fetch();
 
 if ($result != false) {
-    echo json_encode(['status' => 'failed']);
+    echo json_encode(['status' => 'failed4']);
     return;
 }
 
@@ -80,31 +79,22 @@ $stmt->bind_param('ssd', $address, $hash, $value);
 
 //testando se tudo ocorreu bem
 if (!$stmt->execute()) {
-    echo json_encode(['status' => 'failed']);
+    echo json_encode(['status' => 'failed5']);
     return;
 }
 
-//Pegando balance atual
-$conexaoDb = new mysqli($host,  $user, $pass, $name);
-$sql = "SELECT user_balance FROM tb_users WHERE user_address = ?";
-$stmt = $conexaoDb->prepare($sql);
-$stmt->bind_param('s', $address);
-$stmt->execute();
-$balanceUser = $stmt->get_result()->fetch_all(MYSQLI_ASSOC)[0]['user_balance'];
 
 //Somando ao balance do usuario
 $conexaoDb = new mysqli($host,  $user, $pass, $name);
 
-$newBalanceUser = $balanceUser + $value;
-
-$sql = "UPDATE tb_users SET user_balance = ? WHERE user_address = ?";
+$sql = "UPDATE tb_users SET user_balance = user_balance + ? WHERE user_address = ?";
 $stmt = $conexaoDb->prepare($sql);
-$stmt->bind_param('ds', $newBalanceUser, $address);
+$stmt->bind_param('ds', $value, $address);
 $stmt->execute();
 
 //testando se tudo ocorreu bem
 if (!$stmt->affected_rows) {
-    echo json_encode(['status' => 'failed']);
+    echo json_encode(['status' => 'failed6']);
     return;
 }
 
