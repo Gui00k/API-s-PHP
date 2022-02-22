@@ -66,9 +66,9 @@ $host = 'localhost';
 $name = 'db_waifu';
 $user = 'app';
 $pass = 'z&Y2pyUvys4fIAy*r$AFgbPnZSD';
-$conexaoDb = new mysqli($host,  $user, $pass, $name);
 
 //Verificando se transação já existe
+$conexaoDb = new mysqli($host,  $user, $pass, $name);
 $sql = "SELECT * FROM tb_deposit WHERE deposit_hash = ?";
 $stmt = $conexaoDb->prepare($sql);
 $stmt->bind_param('s', $hash);
@@ -79,7 +79,7 @@ if ($result != false) {
     echo json_encode(['status' => 'failed']);
     return;
 }
-echo $address;
+
 //Inserindo deposito
 $conexaoDb = new mysqli($host,  $user, $pass, $name);
 $sql = "INSERT INTO tb_deposit(user_address, deposit_hash, deposit_value, deposit_date) VALUES (?, ?, ?, ?)";
@@ -88,7 +88,6 @@ $stmt->bind_param('ssds', $address, $hash, $value, $depositDate);
 
 //testando se tudo ocorreu bem
 if (!$stmt->execute()) {
-    echo $stmt->error;
     echo json_encode(['status' => 'failed']);
     return;
 }
