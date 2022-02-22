@@ -104,5 +104,10 @@ $sql = "INSERT INTO tb_assets(user_address, card_id) VALUES (?, ?)";
 $stmt = $conexaoDb->prepare($sql);
 $stmt->bind_param('ss', $address, $card['id']);
 
+//testando se tudo ocorreu bem
+if (!$stmt->execute()) {
+    echo json_encode(['status' => 'failed']);
+    return;
+}
 //enviando carta ao usuario
 echo json_encode($card);
