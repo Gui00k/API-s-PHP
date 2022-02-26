@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('America/Sao_Paulo');
+
 $valorCarta = 500;
 $method = $_SERVER['REQUEST_METHOD'];
 if ($method != 'GET') {
@@ -99,10 +101,11 @@ $card = [
 ];
 
 //Inserindo carta sorteada na carteira
+$dataAtual = date('Y/m/d H:i:s');
 $conexaoDb = new mysqli($host,  $user, $pass, $name);
-$sql = "INSERT INTO tb_assets(user_address, card_id) VALUES (?, ?)";
+$sql = "INSERT INTO tb_assets(user_address, card_id, asset_unlock) VALUES (?, ?, ?)";
 $stmt = $conexaoDb->prepare($sql);
-$stmt->bind_param('ss', $address, $card['id']);
+$stmt->bind_param('sis', $address, $card['id'], $dataAtual);
 
 //testando se tudo ocorreu bem
 if (!$stmt->execute()) {
@@ -110,4 +113,5 @@ if (!$stmt->execute()) {
     return;
 }
 //enviando carta ao usuario
+$card['id'] = $conexaoDb->insert_id;
 echo json_encode($card);
