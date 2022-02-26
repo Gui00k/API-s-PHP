@@ -49,7 +49,7 @@ $dataDesbloqueio = $asset['asset_unlock'];
 $strDataDesbloqueio = strtotime($dataDesbloqueio);
 
 
-if ($strDataAtual > $strDataDesbloqueio) { //Carta bloqueada
+if ($strDataAtual < $strDataDesbloqueio) { //Carta bloqueada
     echo json_encode(['status' => 'failed']);
     return;
 }
