@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Sao_Paulo');
 //Checando se o metodo é POST
 $method = $_SERVER['REQUEST_METHOD'];
 if ($method != 'POST') {
@@ -57,9 +58,7 @@ if (strtolower($address) == strtolower($result['to_address'])) {
 $value = $result['value'] / 1000000000000000000;
 $hash = $result['transaction_hash'];
 //Formatando data
-$depositDate = $result['block_timestamp'];
-$depositDate = new DateTime($result['block_timestamp']);
-$depositDate =  $depositDate->format('Y/m/d H:i:s');
+$depositDate = date('Y/m/d H:i:s', strtotime($result['block_timestamp']));
 
 //Conectando banco de dados
 $host = 'localhost';
