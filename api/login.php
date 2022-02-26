@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Sao_Paulo');
 //Credenciais do bd
 $host = 'localhost';
 $name = 'db_waifu';
@@ -36,7 +37,7 @@ $result = @$stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 //verificando se usuario esta cadastrado
 $usuarioCadastrado = $result[0]['resultado'];
 if ($usuarioCadastrado) {
-    echo json_encode(['status' => 'succesfully']);
+    echo json_encode(pegarCartas($address));
     return;
 };
 
@@ -95,9 +96,8 @@ foreach ($transactionList as $transaction) {
     $hash = $transaction['transaction_hash'];
     $value = $transaction['value'] / 1000000000000000000;
     $valorBalance += $value;
-    $depositDate = new DateTime($transaction['block_timestamp']);
-    $depositDate =  $depositDate->format('Y/m/d H:i:s');
-
+    $depositDate = date('Y/m/d H:i:s', strtotime($transaction['block_timestamp']));
+    
     $conexaoDb = new mysqli($host,  $user, $pass, $name);
     $sql = "INSERT INTO tb_deposit(user_address, deposit_hash, deposit_value, deposit_date) VALUES (?, ?, ?, ?)";
     $stmt = $conexaoDb->prepare($sql);
@@ -126,4 +126,18 @@ if (!$stmt->affected_rows) {
     return;
 }
 
-echo json_encode(['status' => 'succesfully']);
+echo json_encode(pegarCartas($address));
+function pegarCartas($address)
+{
+    global $host, $name, $user, $pass;
+    $conexaoDb = new mysqli($host,  $user, $pass, $name);
+    $sql = "SELECT asset_id AS 'id', asset_unlock AS 'dataDesbloqueio', card_name AS 'name', card_type AS 'type', card_img_src AS 'src'
+	    FROM tb_assets
+	    INNER JOIN tb_cards
+	    ON (tb_assets.card_id = tb_cards.card_id)
+        WHERE tb_assets.user_address = ?;";
+    $stmt = $conexaoDb->prepare($sql);
+    $stmt->bind_param('s', $address);
+    $stmt->execute();
+    return @$stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+}
