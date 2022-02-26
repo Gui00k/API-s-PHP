@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Sao_Paulo');
 //Checando se o metodo é POST
 $method = $_SERVER['REQUEST_METHOD'];
 if ($method != 'POST') {
@@ -8,11 +9,18 @@ if ($method != 'POST') {
 
 header('Content-Type: application/json; charset=utf-8');
 
+//Credenciais do bd
+$host = 'localhost';
+$name = 'db_waifu';
+$user = 'app';
+$pass = 'z&Y2pyUvys4fIAy*r$AFgbPnZSD';
+
 //Pegando dados
 $data = json_decode(file_get_contents("php://input"), true);
 $cardId = @$data['cardid'];
+$address = @$data['address'];
 
-if (is_null($cardId)) {
+if (is_null($cardId) || is_null($address)) {
     echo json_encode(['status' => 'failed']);
     return;
 } //No have data
@@ -23,11 +31,25 @@ $sql = "SELECT * FROM tb_assets WHERE asset_id = ?";
 $stmt = $conexaoDb->prepare($sql);
 $stmt->bind_param('i', $cardId);
 $stmt->execute();
-$assets = @$stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$asset = @$stmt->get_result()->fetch_all(MYSQLI_ASSOC)[0];
+if (!$asset) {
+    echo json_encode(['status' => 'failed']);
+    return;
+}
 
-$dataDesbloqueio = strtotime($assets[0]['asset_unlock']);
-$dataAtual = strtotime(date('Y/m/d H:i:s'));
-if ($dataDesbloqueio < $dataAtual) { //Carta bloqueada
+if ($asset['user_address'] != $address) {
+    echo json_encode(['status' => 'failed']);
+    return;
+}
+
+$dataAtual = date('Y/m/d H:i:s');
+$strDataAtual = strtotime($dataAtual);
+
+$dataDesbloqueio = $asset['asset_unlock'];
+$strDataDesbloqueio = strtotime($dataDesbloqueio);
+
+
+if ($strDataAtual > $strDataDesbloqueio) { //Carta bloqueada
     echo json_encode(['status' => 'failed']);
     return;
 }
@@ -36,9 +58,14 @@ if ($dataDesbloqueio < $dataAtual) { //Carta bloqueada
 $conexaoDb = new mysqli($host,  $user, $pass, $name);
 $sql = "SELECT * FROM tb_cards WHERE card_id = ?";
 $stmt = $conexaoDb->prepare($sql);
-$stmt->bind_param('i', $assets[0]['card_id']);
+$stmt->bind_param('i', $asset['card_id']);
 $stmt->execute();
 $card = @$stmt->get_result()->fetch_all(MYSQLI_ASSOC)[0];
+
+if (!$card) {
+    echo json_encode(['status' => 'failed']);
+    return;
+}
 
 $novoSaldo = 0;
 if ($card['card_type'] == 'common') {
@@ -55,7 +82,7 @@ if ($card['card_type'] == 'common') {
 }
 
 //Insere saldo na tb_balances, com o campo balance_unlock para daqui a 5 dias
-$dataDesbloqueioSaldo = date('Y/m/d H:i:s', strtotime($dataAtual . ' + 5 days'));
+$dataDesbloqueioSaldo = date('Y/m/d H:i:s', strtotime("5 days", $strDataAtual));
 $conexaoDb = new mysqli($host,  $user, $pass, $name);
 $sql = "INSERT INTO tb_balances(balance_unlock, balance_value, asset_id) VALUES (?, ?, ?)";
 $stmt = $conexaoDb->prepare($sql);
@@ -68,7 +95,8 @@ if (!$stmt->execute()) {
 }
 
 //Bloqueia carta por 24 horas
-$dataDesbloqueioConta = date('Y/m/d H:i:s', strtotime($dataAtual . ' + 1 days'));
+$dataDesbloqueioConta = date('Y/m/d H:i:s', strtotime("1 days", $strDataAtual));
+
 $conexaoDb = new mysqli($host,  $user, $pass, $name);
 $sql = "UPDATE tb_assets SET asset_unlock = ? WHERE asset_id = ?";
 $stmt = $conexaoDb->prepare($sql);
