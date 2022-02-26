@@ -28,7 +28,7 @@ CREATE TABLE tb_balances(
     balance_unlock DATETIME DEFAULT(NOW()),
     balance_value FLOAT DEFAULT(0),
     asset_id INT NOT NULL,
-    FOREIGN KEY (asset_id) REFERENCES tb_assets(asset_id) ON DELETE CASCADE,
+    FOREIGN KEY (asset_id) REFERENCES tb_assets(asset_id) ON DELETE CASCADE
 );
 
 CREATE TABLE tb_deposit (
@@ -41,9 +41,10 @@ CREATE TABLE tb_deposit (
     UNIQUE (deposit_hash)
 );
 
-/* 
- #Commum
- #Rare
- #Epic
- #Legendary
- */
+INSERT INTO
+    tb_cards(card_name, card_type, card_img_src)
+VALUES
+    ('apollo', 'common', 'Apollo.png'),
+    ('atlas', 'epic', 'Atlas.png'),
+    ('titan', 'legendary', 'Titan.png'),
+    ('astrobee', 'rare', 'Astrobee.png');
