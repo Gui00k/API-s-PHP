@@ -97,7 +97,7 @@ foreach ($transactionList as $transaction) {
     $value = $transaction['value'] / 1000000000000000000;
     $valorBalance += $value;
     $depositDate = date('Y/m/d H:i:s', strtotime($transaction['block_timestamp']));
-    
+
     $conexaoDb = new mysqli($host,  $user, $pass, $name);
     $sql = "INSERT INTO tb_deposit(user_address, deposit_hash, deposit_value, deposit_date) VALUES (?, ?, ?, ?)";
     $stmt = $conexaoDb->prepare($sql);
