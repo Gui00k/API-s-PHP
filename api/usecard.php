@@ -70,11 +70,11 @@ if (!$card) {
 $novoSaldo = 0;
 if ($card['card_type'] == 'common') {
     $novoSaldo = rand(1, 10);
-} else if ($$card['card_type'] == 'rare') {
+} else if ($card['card_type'] == 'rare') {
     $novoSaldo = rand(1, 15);
-} else if ($$card['card_type'] == 'legendary') {
+} else if ($card['card_type'] == 'legendary') {
     $novoSaldo = rand(1, 20);
-} else if ($$card['card_type'] == 'epic') {
+} else if ($card['card_type'] == 'epic') {
     $novoSaldo = rand(1, 25);
 } else {
     echo json_encode(['status' => 'failed']);
