@@ -4,7 +4,9 @@ USE db_waifu;
 
 CREATE TABLE tb_users (
     user_address CHAR(42) PRIMARY KEY,
-    user_balance FLOAT DEFAULT(0)
+    user_balance FLOAT DEFAULT(0),
+    balance_unlock DATETIME DEFAULT(NOW()),
+    balance_unlock_value FLOAT DEFAULT(0)
 );
 
 CREATE TABLE tb_cards (
@@ -21,14 +23,6 @@ CREATE TABLE tb_assets (
     card_id INT NOT NULL,
     FOREIGN KEY (user_address) REFERENCES tb_users(user_address) ON DELETE CASCADE,
     FOREIGN KEY (card_id) REFERENCES tb_cards(card_id) ON DELETE CASCADE
-);
-
-CREATE TABLE tb_balances(
-    balance_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    balance_unlock DATETIME DEFAULT(NOW()),
-    balance_value FLOAT DEFAULT(0),
-    asset_id INT NOT NULL,
-    FOREIGN KEY (asset_id) REFERENCES tb_assets(asset_id) ON DELETE CASCADE
 );
 
 CREATE TABLE tb_deposit (

@@ -67,29 +67,30 @@ if (!$card) {
     return;
 }
 
-$novoSaldo = 0;
+$value = 0;
 if ($card['card_type'] == 'common') {
-    $novoSaldo = rand(1, 10);
+    $value = rand(1, 10);
 } else if ($card['card_type'] == 'rare') {
-    $novoSaldo = rand(1, 15);
+    $value = rand(1, 15);
 } else if ($card['card_type'] == 'legendary') {
-    $novoSaldo = rand(1, 20);
+    $value = rand(1, 20);
 } else if ($card['card_type'] == 'epic') {
-    $novoSaldo = rand(1, 25);
+    $value = rand(1, 25);
 } else {
     echo json_encode(['status' => 'failed']);
     return;
 }
 
-//Insere saldo na tb_balances, com o campo balance_unlock para daqui a 5 dias
-$dataDesbloqueioSaldo = date('Y/m/d H:i:s', strtotime("5 days", $strDataAtual));
+//Insere saldo no proximo desbloqueio
 $conexaoDb = new mysqli($host,  $user, $pass, $name);
-$sql = "INSERT INTO tb_balances(balance_unlock, balance_value, asset_id) VALUES (?, ?, ?)";
+
+$sql = "UPDATE tb_users SET balance_unlock_value = balance_unlock_value + ? WHERE user_address = ?";
 $stmt = $conexaoDb->prepare($sql);
-$stmt->bind_param('sdi', $dataDesbloqueioSaldo, $novoSaldo, $cardId);
+$stmt->bind_param('ds', $value, $address);
+$stmt->execute();
 
 //testando se tudo ocorreu bem
-if (!$stmt->execute()) {
+if (!$stmt->affected_rows) {
     echo json_encode(['status' => 'failed']);
     return;
 }
@@ -110,4 +111,4 @@ if (!$stmt->affected_rows) {
 }
 
 //Retorna valor gerado
-echo json_encode(['valor' => $novoSaldo]);
+echo json_encode(['valor' => $value]);

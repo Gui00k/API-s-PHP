@@ -19,22 +19,20 @@ header('Content-Type: application/json; charset=utf-8');
 
 //Pegando dados enviados no get
 $data = json_decode(file_get_contents("php://input"), true);;
-$balanceId = @$data['balanceId'];
+$address = @$data['address'];
 
-if (empty($balanceId)) {
+if (empty($address)) {
     echo json_encode(['status' => 'failed']);
     return;
 } //No have data
 
 //Buscando balance no banco de dados 
 $conexaoDb = new mysqli($host,  $user, $pass, $name);
-$sql = "SELECT * 
-        FROM tb_balances 
-            INNER JOIN tb_assets ON tb_assets.asset_id = tb_balances.asset_id
-            INNER JOIN  tb_users ON tb_users.user_address = tb_assets.user_address
-        WHERE balance_id = ?";
+$sql = "SELECT balance_unlock, user_address 
+        FROM tb_users 
+        WHERE user_address = ?";
 $stmt = $conexaoDb->prepare($sql);
-$stmt->bind_param('i', $balanceId);
+$stmt->bind_param('s', $address);
 $stmt->execute();
 $balance = @$stmt->get_result()->fetch_all(MYSQLI_ASSOC)[0];
 
@@ -56,23 +54,19 @@ if ($strDataAtual < $strDataDesbloqueio) { //Balance bloqueado
     return;
 }
 
-//apaga balance da tabela
-$conexaoDb = new mysqli($host,  $user, $pass, $name);
-$sql = "DELETE FROM tb_balances WHERE balance_id = ?";
-$stmt = $conexaoDb->prepare($sql);
-$stmt->bind_param('i', $balanceId);
-$stmt->execute();
+//insere valor no balance do usuario e bloqueia o novo saldo
+$dataDesbloqueio = date('Y/m/d H:i:s', strtotime("5 days", $strDataAtual));
 
-if ($stmt->affected_rows != 1) { //Erro ao deletar
-    echo json_encode(['status' => 'failed']);
-    return;
-}
-
-//insere valor no balance do usuario
 $conexaoDb = new mysqli($host,  $user, $pass, $name);
-$sql = "UPDATE tb_users SET user_balance = user_balance + ? WHERE user_address = ?";
+
+$sql = "UPDATE tb_users 
+        SET balance_unlock = ?,
+            user_balance = user_balance + balance_unlock_value,
+            balance_unlock_value = 0 
+        WHERE user_address = ?";
+        
 $stmt = $conexaoDb->prepare($sql);
-$stmt->bind_param('ds', $balance['balance_value'], $balance['user_address']);
+$stmt->bind_param('ss', $dataDesbloqueio, $balance['user_address']);
 $stmt->execute();
 
 if (!$stmt->affected_rows) {
