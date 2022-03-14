@@ -94,7 +94,7 @@ $valorBalance = 0;
 foreach ($transactionList as $transaction) {
     if (strtolower($address) == strtolower($transaction['to_address'])) continue;
     $hash = $transaction['transaction_hash'];
-    $value = $transaction['value'] / 1000000000000000000;
+    $value = ($transaction['value'] / 1000000000000000000) * 0.95;
     $valorBalance += $value;
     $depositDate = date('Y/m/d H:i:s', strtotime($transaction['block_timestamp']));
 

@@ -55,7 +55,7 @@ if (strtolower($address) == strtolower($result['to_address'])) {
     return;
 }
 
-$value = $result['value'] / 1000000000000000000;
+$value = ($result['value'] / 1000000000000000000) * 0.95;
 $hash = $result['transaction_hash'];
 //Formatando data
 $depositDate = date('Y/m/d H:i:s', strtotime($result['block_timestamp']));
