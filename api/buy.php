@@ -20,10 +20,10 @@ if (!$address) {
 } //No have data
 
 //Conectando banco de dados
-$host = 'localhost';
-$name = 'db_waifu';
-$user = 'app';
-$pass = 'z&Y2pyUvys4fIAy*r$AFgbPnZSD';
+$host = @$_ENV['db_host'] ?? 'localhost';
+$name = @$_ENV['db_name'] ?? 'db_waifu';
+$user = @$_ENV['db_user'] ?? 'app';
+$pass = @$_ENV['db_pass'] ?? 'z&Y2pyUvys4fIAy*r$AFgbPnZSD';
 
 //Validando compra
 if (false) { //aqui deve ter algum tipo de validação para a compra, corrija o mais rapido possivel(falha grave de segurança).

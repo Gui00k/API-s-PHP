@@ -1,10 +1,10 @@
 <?php
 date_default_timezone_set('America/Sao_Paulo');
 //Credenciais do bd
-$host = 'localhost';
-$name = 'db_waifu';
-$user = 'app';
-$pass = 'z&Y2pyUvys4fIAy*r$AFgbPnZSD';
+$host = @$_ENV['db_host'] ?? 'localhost';
+$name = @$_ENV['db_name'] ?? 'db_waifu';
+$user = @$_ENV['db_user'] ?? 'app';
+$pass = @$_ENV['db_pass'] ?? 'z&Y2pyUvys4fIAy*r$AFgbPnZSD';
 
 //Validando método de solicitação
 $method = $_SERVER['REQUEST_METHOD'];

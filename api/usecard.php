@@ -10,10 +10,10 @@ if ($method != 'POST') {
 header('Content-Type: application/json; charset=utf-8');
 
 //Credenciais do bd
-$host = 'localhost';
-$name = 'db_waifu';
-$user = 'app';
-$pass = 'z&Y2pyUvys4fIAy*r$AFgbPnZSD';
+$host = @$_ENV['db_host'] ?? 'localhost';
+$name = @$_ENV['db_name'] ?? 'db_waifu';
+$user = @$_ENV['db_user'] ?? 'app';
+$pass = @$_ENV['db_pass'] ?? 'z&Y2pyUvys4fIAy*r$AFgbPnZSD';
 
 //Pegando dados
 $data = json_decode(file_get_contents("php://input"), true);
