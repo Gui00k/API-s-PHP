@@ -2,11 +2,11 @@
 date_default_timezone_set('America/Sao_Paulo');
 
 $valorCarta = 500;
-$method = $_SERVER['REQUEST_METHOD'];
+/* $method = $_SERVER['REQUEST_METHOD'];
 if ($method != 'GET') {
     http_response_code(404);
     return;
-} //method not is POST 
+} //method not is POST  */
 
 header('Content-Type: application/json; charset=utf-8');
 

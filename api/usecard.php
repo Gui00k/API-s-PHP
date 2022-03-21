@@ -1,11 +1,11 @@
 <?php
 date_default_timezone_set('America/Sao_Paulo');
 //Checando se o metodo é POST
-$method = $_SERVER['REQUEST_METHOD'];
+/* $method = $_SERVER['REQUEST_METHOD'];
 if ($method != 'POST') {
     http_response_code(404);
     return;
-} //method not is POST 
+} //method not is POST  */
 
 header('Content-Type: application/json; charset=utf-8');
 

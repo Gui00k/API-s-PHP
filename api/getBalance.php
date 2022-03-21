@@ -5,12 +5,12 @@ $name = @$_ENV['db_name'] ?? 'db_waifu';
 $user = @$_ENV['db_user'] ?? 'app';
 $pass = @$_ENV['db_pass'] ?? 'z&Y2pyUvys4fIAy*r$AFgbPnZSD';
 
-$method = $_SERVER['REQUEST_METHOD'];
+/* $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method != 'GET') {
     http_response_code(404);
     return;
-} //method not is GET
+} //method not is GET */
 
 header('Content-Type: application/json; charset=utf-8');
 
