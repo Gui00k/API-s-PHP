@@ -97,7 +97,7 @@ $card = [
     'id' => $result['card_id'],
     'name' => $result['card_name'],
     'type' => $result['card_type'],
-    'src' => 'assets/card/' . $result['card_img_src'],
+    'src' => $result['card_img_src'],
 ];
 
 //Inserindo carta sorteada na carteira
