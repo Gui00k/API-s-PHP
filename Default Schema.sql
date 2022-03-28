@@ -1,4 +1,4 @@
-SET GLOBAL time_zone = 'America/New_York';
+SET GLOBAL time_zone = '-04:00';
 
 CREATE DATABASE db_waifu;
 
@@ -40,7 +40,7 @@ CREATE TABLE tb_deposit (
 INSERT INTO
     tb_cards(card_name, card_type, card_img_src)
 VALUES
-    ('apollo', 'common', 'Apollo.png'),
-    ('atlas', 'epic', 'Atlas.png'),
-    ('titan', 'legendary', 'Titan.png'),
-    ('astrobee', 'rare', 'Astrobee.png');
+    ('Yulia Natsume', 'common', 'yulia_natsume_common.png'),
+    ('Seraphin', 'rare', 'seraphin-rare.png'),
+    ('Eve "Fire Queen"', 'legendary', 'eve_fire_queen_legendary.png'),
+    ('Hoshizora', 'epic', 'hoshizora_epic.png');
