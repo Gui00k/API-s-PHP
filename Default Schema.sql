@@ -5,7 +5,7 @@ USE db_waifu;
 CREATE TABLE tb_users (
     user_address CHAR(42) PRIMARY KEY,
     user_balance FLOAT DEFAULT(0),
-    balance_unlock DATETIME DEFAULT(NOW()),
+    balance_unlock DATETIME DEFAULT(ADDDATE(NOW(), INTERVAL 5 DAY)),
     balance_unlock_value FLOAT DEFAULT(0)
 );
 
