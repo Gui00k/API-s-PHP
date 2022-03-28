@@ -1,3 +1,5 @@
+SET GLOBAL time_zone = 'America/New_York';
+
 CREATE DATABASE db_waifu;
 
 USE db_waifu;

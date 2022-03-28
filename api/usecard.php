@@ -1,5 +1,5 @@
 <?php
-date_default_timezone_set('America/Sao_Paulo');
+date_default_timezone_set("America/New_York");
 //Checando se o metodo é POST
 /* $method = $_SERVER['REQUEST_METHOD'];
 if ($method != 'POST') {
