@@ -1,4 +1,4 @@
-SET GLOBAL time_zone = '-04:00';
+SET time_zone = '-04:00';
 
 CREATE DATABASE db_waifu;
 
